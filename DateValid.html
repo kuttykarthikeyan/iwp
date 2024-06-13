@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Validation (Below Current Date, Year, and Month)</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Date Validation (Below Current Date, Year, and Month)</h2>
+    <form id="dateForm">
+        <label for="dateInput">Enter Date (yyyy-mm-dd or dd-mm-yyyy):</label>
+        <input type="text" id="dateInput" name="dateInput" required>
+        <button type="button" onclick="validateDate()">Validate Date</button>
+        <p id="dateError" class="error"></p>
+    </form>
+
+    <script>
+        function validateDate() {
+            const dateInput = document.getElementById('dateInput').value.trim();
+            const dateError = document.getElementById('dateError');
+            dateError.textContent = '';
+
+            // Validate date format
+            const datePattern = /^(\d{4}-\d{2}-\d{2})|(\d{2}-\d{2}-\d{4})$/;
+
+            if (!datePattern.test(dateInput)) {
+                dateError.textContent = 'Invalid date format. Please use yyyy-mm-dd or dd-mm-yyyy.';
+                return;
+            }
+
+            let year, month, day;
+
+            if (dateInput.indexOf('-') === 4) {
+                // yyyy-mm-dd format
+                year = dateInput.substring(0, 4);
+                month = dateInput.substring(5, 7);
+                day = dateInput.substring(8, 10);
+            } else {
+                // dd-mm-yyyy format
+                day = dateInput.substring(0, 2);
+                month = dateInput.substring(3, 5);
+                year = dateInput.substring(6, 10);
+            }
+
+            // Convert to numbers
+            year = parseInt(year, 10);
+            month = parseInt(month, 10);
+            day = parseInt(day, 10);
+
+            // Validate if date is below current date, year, and month
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-based index
+
+            if (year > currentYear || 
+                (year == currentYear && month > currentMonth) ||
+                (year == currentYear && month == currentMonth && day > currentDate.getDate())) {
+                dateError.textContent = 'Date should be below current date, year, and month.';
+            } else {
+                dateError.textContent = 'Date format is valid and below current date, year, and month.';
+            }
+        }
+    </script>
+</body>
+</html>
