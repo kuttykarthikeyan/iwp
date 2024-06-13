@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email and Password Validation</title>
+    <style>
+        .invalid {
+            border: 1px solid red;
+        }
+        .valid {
+            border: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Email and Password Validation</h2>
+    <form id="myForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+
+        <button type="button" onclick="validateForm()">Submit</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            document.getElementById('email').classList.remove('invalid', 'valid');
+            document.getElementById('password').classList.remove('invalid', 'valid');
+
+            let isValid = true;
+
+            const emailInput = document.getElementById('email').value.trim();
+            if (!emailInput || !emailInput.endsWith('@gmail.com')) {
+                document.getElementById('email').classList.add('invalid');
+                isValid = false;
+            } else {
+                document.getElementById('email').classList.add('valid');
+            }
+
+            const passwordInput = document.getElementById('password').value.trim();
+
+            // Password validation regex pattern
+            const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&#])(?=.*\d).{8,}$/;
+            if (!passwordPattern.test(passwordInput)) {
+                document.getElementById('password').classList.add('invalid');
+                isValid = false;
+            } else {
+                document.getElementById('password').classList.add('valid');
+            }
+
+            if (!isValid) {
+                alert('Please fill out the form correctly.');
+            } else {
+                alert('Form submitted successfully!');
+            }
+        }
+    </script>
+</body>
+</html>
